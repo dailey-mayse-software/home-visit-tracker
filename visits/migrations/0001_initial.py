@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('visit_date', models.DateTimeField()),
                 ('duration', models.IntegerField()),
-                ('client', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='timelogger.Client')),
+                ('client', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='visits.Client')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

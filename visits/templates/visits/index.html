@@ -1,0 +1,9 @@
+{% if recent_visits %}
+  <ul>
+  {% for visit in recent_visits %}
+    <li><a href="{% url 'visits:detail' visit.id %}">Duration(mins): {{ visit.duration }}</a></li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>No visits are available.</p>
+{% endif %}
