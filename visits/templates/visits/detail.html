@@ -4,3 +4,7 @@
 <p>{{ visit.client }}</p>
 <p>{{ visit.visit_date }}</p>
 <p>{{ visit.duration }}</p>
+
+<a href="{% url 'visits:update' visit.id %}">Update</a>
+<br>
+<a href="{% url 'visits:delete' visit.id %}">Delete</a>

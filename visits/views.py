@@ -8,7 +8,7 @@ class IndexView(generic.ListView):
     template_name = 'visits/index.html'
 
     def get_queryset(self):
-        return Visit.objects.order_by('-visit_date')[:5]
+        return Visit.objects.order_by('-visit_date')[:50]
 
 
 class CreateView(generic.CreateView):
