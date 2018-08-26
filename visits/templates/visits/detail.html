@@ -1,19 +1,6 @@
 <h1>Some visit detail message</h1>
 
-{% if error_message %}
-<p><strong>{{ error_message }}</strong></p>
-{% endif %}
-
-<form action="{% url 'visits:update' visit.id %}" method="post">
-  {% csrf_token %}
-
-  <label for="visit_date">Visit date: </label>
-  <input type="text" name="visit_date" id="visit_date" value="{{ visit.visit_date }}">
-  <br>
-
-  <label for="visit_date">Duration: </label>
-  <input type="text" name="duration" id="duration" value="{{ visit.duration }}">
-  <br>
-
-  <input type="submit" value="Update">
-</form>
+<p>{{ visit.user }}</p>
+<p>{{ visit.client }}</p>
+<p>{{ visit.visit_date }}</p>
+<p>{{ visit.duration }}</p>
