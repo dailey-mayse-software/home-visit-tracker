@@ -4,8 +4,8 @@ from .models import Visit
 
 
 class IndexView(generic.ListView):
-    context_object_name = 'recent_visits'
     template_name = 'visits/index.html'
+    context_object_name = 'recent_visits'
 
     def get_queryset(self):
         return Visit.objects.order_by('-visit_date')[:50]

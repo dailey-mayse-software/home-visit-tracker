@@ -1,5 +1,39 @@
+{% extends 'base_bulma.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+{% if form.errors %}
+  Errors:
+  <p>form.errors.as_json: {{ form.errors.as_json }}</p>
+  <p>form.errors.visit_date: {{ form.errors.visit_date }}</p>
+{% endif %}
+
 <form method="post">
   {% csrf_token %}
-  {{ form.as_p }}
+
+  <!-- Generates the below HTML {{ form.as_p }} -->
+
+  {% if form.errors.user %}
+    <p>{{ form.errors.user }}</p>
+  {% endif %}
+  <p>{{form.user.label_tag}} {{ form.user }}</p>
+
+  {% if form.errors.client %}
+    <p>{{ form.errors.client }}</p>
+  {% endif %}
+  <p>{{form.client.label_tag}} {{ form.client }}</p>
+
+  {% if form.errors.visit_date %}
+    <p>{{ form.errors.visit_date }}</p>
+  {% endif %}
+  <p>{{form.visit_date.label_tag}} {{ form.visit_date|attr:"type:date" }}</p>
+
+  {% if form.errors.duration %}
+    <p>{{ form.errors.duration }}</p>
+  {% endif %}
+  <p>{{form.duration.label_tag}} {{ form.duration }}</p>
   <input type="submit" value="Save">
 </form>
+
+{% endblock %}
