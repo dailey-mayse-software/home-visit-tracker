@@ -19,4 +19,4 @@ class Visit(models.Model):
     duration = models.IntegerField()
 
     def __str__(self):
-        return f'{self.user} -> {self.client} on {self.visit_date}'
+        return f'{self.client} on {self.visit_date}'

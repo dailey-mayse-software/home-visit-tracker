@@ -7,19 +7,74 @@
   <title>Home Visit Portal</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+  {% load static %}
+  <script src="{% static 'js/site.js' %}"></script>
 </head>
 
 <body>
+
+<!-- Only show navbar if the user is logged in -->
+{% if user.is_authenticated %}
+<nav class="navbar is-transparent">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="https://bulma.io">
+      <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+    </a>
+    <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <div id="navbarExampleTransparentExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="{% url 'visits:index' %}">
+        Home
+      </a>
+      <a class="navbar-item" href="{% url 'logout' %}">
+        Logout
+      </a>
+      <!-- Dropdown menu within the navbar -->
+      <!--<div class="navbar-item has-dropdown is-hoverable">-->
+        <!--<a class="navbar-link" href="/documentation/overview/start/">-->
+          <!--Docs-->
+        <!--</a>-->
+        <!-- Puts a horizontal divider in the dropdown -->
+        <!--<div class="navbar-dropdown is-boxed">-->
+          <!--<a class="navbar-item" href="/documentation/overview/start/">-->
+            <!--Overview-->
+          <!--</a>-->
+          <!--<a class="navbar-item" href="https://bulma.io/documentation/modifiers/syntax/">-->
+            <!--Modifiers-->
+          <!--</a>-->
+          <!--<a class="navbar-item" href="https://bulma.io/documentation/columns/basics/">-->
+            <!--Columns-->
+          <!--</a>-->
+          <!--<a class="navbar-item" href="https://bulma.io/documentation/layout/container/">-->
+            <!--Layout-->
+          <!--</a>-->
+          <!--<a class="navbar-item" href="https://bulma.io/documentation/form/general/">-->
+            <!--Form-->
+          <!--</a>-->
+          <!--<hr class="navbar-divider">-->
+          <!--<a class="navbar-item" href="https://bulma.io/documentation/elements/box/">-->
+            <!--Elements-->
+          <!--</a>-->
+          <!--<a class="navbar-item is-active" href="https://bulma.io/documentation/components/breadcrumb/">-->
+            <!--Components-->
+          <!--</a>-->
+        <!--</div>-->
+      </div>
+    </div>
+  </div>
+</nav>
+{% endif %}
+
 {% block content %}
 {% endblock %}
-<!--<ul class="sidebar-nav">-->
- <!--{% if user.is_authenticated %}-->
-   <!--<li>User: {{ user.get_username }}</li>-->
-   <!--<li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>-->
- <!--{% else %}-->
-   <!--<li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>-->
- <!--{% endif %}-->
-<!--</ul>-->
 </body>
 
 </html>

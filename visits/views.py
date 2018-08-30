@@ -1,9 +1,15 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.shortcuts import render
 from django.views import generic
 from .models import Visit
 
 
-class IndexView(generic.ListView):
+def help_page(request):
+    return render(request, 'visits/help.html')
+
+
+class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'visits/index.html'
     context_object_name = 'recent_visits'
 
@@ -11,26 +17,30 @@ class IndexView(generic.ListView):
         return Visit.objects.order_by('-visit_date')[:50]
 
 
-class CreateView(generic.CreateView):
+class CreateView(LoginRequiredMixin, generic.CreateView):
     model = Visit
     template_name = 'visits/create.html'
-    fields = ['user', 'client', 'visit_date', 'duration']
+    fields = ['client', 'visit_date', 'duration']
     success_url = reverse_lazy('visits:index')
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
-class DetailView(generic.DetailView):
+
+class DetailView(LoginRequiredMixin, generic.DetailView):
     model = Visit
     template_name = 'visits/detail.html'
 
 
-class UpdateView(generic.UpdateView):
+class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Visit
     template_name = 'visits/update.html'
     fields = ['visit_date', 'duration']
     success_url = reverse_lazy('visits:index')
 
 
-class DeleteView(generic.DeleteView):
+class DeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Visit
     template_name = 'visits/delete.html'
     success_url = reverse_lazy('visits:index')

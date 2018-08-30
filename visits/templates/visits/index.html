@@ -1,14 +1,23 @@
-{% if recent_visits %}
-  <ul>
-  {% for visit in recent_visits %}
-    <li><a href="{% url 'visits:detail' visit.id %}">Duration(mins): {{ visit.duration }}</a></li>
-  {% endfor %}
-  </ul>
-{% else %}
-  <p>No visits are available.</p>
-{% endif %}
-<a href="{% url 'visits:create' %}">Create</a>
-<br>
-<a href="{% url 'login' %}">Login</a>
-<br>
-<a href="{% url 'logout' %}">Logout</a>
+{% extends 'base_bulma.html' %}
+
+{% block content %}
+
+<div class="section">
+  <div class="container">
+    <div class="column is-6 is-offset-3">
+      {% if recent_visits %}
+        {% for visit in recent_visits %}
+          <a class="box" href="{% url 'visits:detail' visit.id %}">
+            {{ visit.client }} on {{ visit.visit_date }}
+          </a>
+        {% endfor %}
+      {% else %}
+        <p>No visits are available.</p>
+      {% endif %}
+      <a class="button is-primary" href="{% url 'visits:create' %}">Add Visit</a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

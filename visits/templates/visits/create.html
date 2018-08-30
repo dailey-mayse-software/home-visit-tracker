@@ -1,127 +1,130 @@
 {% extends 'base_bulma.html' %}
-{% load widget_tweaks %}
 
 {% block content %}
 
-{% if form.errors %}
-  Errors:
-  <p>form.errors.as_json: {{ form.errors.as_json }}</p>
-  <p>form.errors.visit_date: {{ form.errors.visit_date }}</p>
-{% endif %}
+<div class="section">
+  <form method="post">
+    {% csrf_token %}
 
-<form method="post">
-  {% csrf_token %}
+    {{ form.non_field_errors }}
+    {{ form.errors }}
 
-  <!-- Generates the below HTML {{ form.as_p }} -->
+    <div class="field">
+      <label class="label">Client</label>
+      <div class="control">
+        <div class="select">
+          <select name="{{ form.client.name }}" id="{{ form.client.auto_id }}" required>
+            {% for value, text in form.client.field.choices %}
+              <option value="{{ value }}">{{ text }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
 
-  {% if form.errors.user %}
-    <p>{{ form.errors.user }}</p>
-  {% endif %}
-  <p>{{form.user.label_tag}} {{ form.user }}</p>
+    <div class="field">
+      <label class="label">Visit Date</label>
+      <div class="control">
+        <input name="{{ form.visit_date.name }}" id="{{ form.visit_date.auto_id }}" class="input is-info" type="text" required>
+      </div>
+    </div>
 
-  {% if form.errors.client %}
-    <p>{{ form.errors.client }}</p>
-  {% endif %}
-  <p>{{form.client.label_tag}} {{ form.client }}</p>
+    <div class="field">
+      <label class="label">Visit Date</label>
+      <div class="control">
+        <input name="{{ form.duration.name }}" id="{{ form.duration.auto_id }}" class="input is-info" type="number" required>
+      </div>
+    </div>
 
-  {% if form.errors.visit_date %}
-    <p>{{ form.errors.visit_date }}</p>
-  {% endif %}
-  <p>{{form.visit_date.label_tag}} {{ form.visit_date|attr:"type:date" }}</p>
-
-  {% if form.errors.duration %}
-    <p>{{ form.errors.duration }}</p>
-  {% endif %}
-  <p>{{form.duration.label_tag}} {{ form.duration }}</p>
-
-  <!--
-
-  Automatic rendering of the entire inner form (not recommended):
-  {{ form.as_p }}      # Render the inner form as simple p tags
-  {{ form.as_ul }}     # Render the inner form as a simple list
-  {{ form.as_table }}  # Render the inner form as a simple table
-
-  The fields are accessible by iterating over the form (probably not recommended):
-  {% for field in form %}  # Iterate over all fields
-    {{ field }}
-  {% endfor %}
-
-  {% for field in form.visible_fields %}  # Iterate over only the visible fields
-    {{ field }}
-  {% endfor %}
-
-  {% for field in form.hidden_fields %}  # Iterate over only the hidden fields
-    {{ field }}
-  {% endfor %}
-
-  These ideas seem nice, but I really don't like losing the flexibility
-  of being able to style things exactly how I want them. I love Django's
-  Model system, its ORM, and the automatic Form handling, but auto-generating
-  HTML based on a model sacrifices too much flexibility compared to the
-  value that it adds.
-
-  Automatically render an entire form and make it fussy to specify all the styling
-  attributes in the code? Have to use a 3rd party library to _nicely_ customize the CSS
-  of these elements? I'd really rather write the entire form myself and manually link
-  to the form fields by name. If I miss one or incorrectly name something, then that's
-  my own fault and I'll fix it. As a I said, I really love the automatic Form binding /
-  handling and I want to keep that feature. I just don't want any HTML rendering to occur
-  that isn't under my (and subsequently Bulma's) control.
-
-  Field-level errors (also accessible via the individual fields, so not recommended?)
-  {{ form.errors }}                # Renders errors in some simple HTML (not recommended)
-  {{ form.errors.as_json }}        # Collect all the form errors as a JSON object
-  {{ form.errors.name_of_field }}  # Get the errors for a specific field
-
-  I also really don't want to have to write any sort of styling info outside of the
-  HTML templates. The library django-widget-tweaks helps this to an extent, but
-  it had at least one bug that made it unusable (it wasn't properly replacing the 'type'
-  attribute on input tags). In the end, and after digging through the docs for a while,
-  I found that facilities do exist to utilize Django's Form system without sacrificing
-  the HTML flexibility.
-
-
-
-  Now this is what I'm after. I want all of this information to be in one place for future
-  reference. This is all the knowledge necessary to wire my custom HTML up to Django's handy
-  Form handling system. This gives me best of both worlds. This is the level of abstraction
-  that I prefer to work at.
-
-  Form-level errors:
-  {{ form.non_field_errors }}
-
-  Each field is available as an attribute of the form using:
-  {{ form.name_of_field }}
-
-  Field attributes:
-  {{ form.name_of_field }}               # Renders the entire field: label and input (not recommended)
-  {{ form.name_of_field.auto_id }}       # HTML ID attribute
-  {{ form.name_of_field.name }}          # Name of this field in the form
-  {{ form.name_of_field.value }}         # Current value of this field
-  {{ form.name_of_field.label }}         # Name of this field's label
-  {{ form.name_of_field.label_tag }}     # Rendered label tag for this field (not recommended)
-  {{ form.name_of_field.id_for_label }}  # Links a label to its input field
-  {{ form.name_of_field.help_text }}     # Help text for the field (comes from the model?)
-  {{ form.name_of_field.html_name }}     # HTML name attribute
-  {{ form.name_of_field.is_hidden }}     # True if this field is hidden, else False
-  {{ form.name_of_field.data }}          # Data bound to this field
-  {{ form.name_of_field.errors }}        # Iterable of form errors
-  
-  Attributes specific to certain types of fields:
-  {{ form.name_of_field.field }}
-
-  CharField:
-  {{ form.name_of_char_field.field.max_length }}  # Maximum length of this field
-  {{ form.name_of_char_field.field.min_length }}  # Minimum length of this field
-
-  ChoiceField:
-  {{ form.name_of_choice_field.field.choices }}  # Iterable of (key, value) choices for this field
-
-  TODO: Other specific field attributes
-
-  -->
-
-  <input type="submit" value="Save">
-</form>
+    <input class="button is-primary" type="submit" value="Save">
+  </form>
+</div>
 
 {% endblock %}
+
+<!--
+
+Automatic rendering of the entire inner form (not recommended):
+{{ form.as_p }}      # Render the inner form as simple p tags
+{{ form.as_ul }}     # Render the inner form as a simple list
+{{ form.as_table }}  # Render the inner form as a simple table
+
+The fields are accessible by iterating over the form (probably not recommended):
+{% for field in form %}  # Iterate over all fields
+  {{ field }}
+{% endfor %}
+
+{% for field in form.visible_fields %}  # Iterate over only the visible fields
+  {{ field }}
+{% endfor %}
+
+{% for field in form.hidden_fields %}  # Iterate over only the hidden fields
+  {{ field }}
+{% endfor %}
+
+These ideas seem nice, but I really don't like losing the flexibility
+of being able to style things exactly how I want them. I love Django's
+Model system, its ORM, and the automatic Form handling, but auto-generating
+HTML based on a model sacrifices too much flexibility compared to the
+value that it adds.
+
+Automatically render an entire form and make it fussy to specify all the styling
+attributes in the code? Have to use a 3rd party library to _nicely_ customize the CSS
+of these elements? I'd really rather write the entire form myself and manually link
+to the form fields by name. If I miss one or incorrectly name something, then that's
+my own fault and I'll fix it. As a I said, I really love the automatic Form binding /
+handling and I want to keep that feature. I just don't want any HTML rendering to occur
+that isn't under my (and subsequently Bulma's) control.
+
+Field-level errors (also accessible via the individual fields, so not recommended?)
+{{ form.errors }}                # Renders errors in some simple HTML (not recommended)
+{{ form.errors.as_json }}        # Collect all the form errors as a JSON object
+{{ form.errors.name_of_field }}  # Get the errors for a specific field
+
+I also really don't want to have to write any sort of styling info outside of the
+HTML templates. The library django-widget-tweaks helps this to an extent, but
+it had at least one bug that made it unusable (it wasn't properly replacing the 'type'
+attribute on input tags). In the end, and after digging through the docs for a while,
+I found that facilities do exist to utilize Django's Form system without sacrificing
+the HTML flexibility.
+
+
+
+Now this is what I'm after. I want all of this information to be in one place for future
+reference. This is all the knowledge necessary to wire my custom HTML up to Django's handy
+Form handling system. This gives me best of both worlds. This is the level of abstraction
+that I prefer to work at.
+
+Form-level errors:
+{{ form.non_field_errors }}
+
+Each field is available as an attribute of the form using:
+{{ form.name_of_field }}
+
+Field attributes:
+{{ form.name_of_field }}               # Renders the entire field: label and input (not recommended)
+{{ form.name_of_field.auto_id }}       # HTML ID attribute
+{{ form.name_of_field.name }}          # Name of this field in the form
+{{ form.name_of_field.value }}         # Current value of this field
+{{ form.name_of_field.label }}         # Name of this field's label
+{{ form.name_of_field.label_tag }}     # Rendered label tag for this field (not recommended)
+{{ form.name_of_field.id_for_label }}  # Links a label to its input field
+{{ form.name_of_field.help_text }}     # Help text for the field (comes from the model?)
+{{ form.name_of_field.html_name }}     # HTML name attribute
+{{ form.name_of_field.is_hidden }}     # True if this field is hidden, else False
+{{ form.name_of_field.data }}          # Data bound to this field
+{{ form.name_of_field.errors }}        # Iterable of form errors
+
+Attributes specific to certain types of fields:
+{{ form.name_of_field.field }}
+
+CharField:
+{{ form.name_of_char_field.field.max_length }}  # Maximum length of this field
+{{ form.name_of_char_field.field.min_length }}  # Minimum length of this field
+
+ChoiceField:
+{{ form.name_of_choice_field.field.choices }}  # Iterable of (key, value) choices for this field
+
+TODO: Other specific field attributes
+
+-->
