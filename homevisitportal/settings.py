@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'widget_tweaks',
     'visits.apps.VisitsConfig',
 ]
 
@@ -61,7 +60,7 @@ ROOT_URLCONF = 'homevisitportal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'homevisitportal', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
